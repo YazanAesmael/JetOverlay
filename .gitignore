@@ -7,9 +7,14 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.kotlin
+/.gradle
 .DS_Store
 /build
 /captures
+/app/release
+/app/build
 .externalNativeBuild
 .cxx
 local.properties
+jetoverlay.jks
