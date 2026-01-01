@@ -1,4 +1,3 @@
-```markdown
 # JetOverlay SDK
 
 A lightweight, **Jetpack Compose-first** SDK for managing floating Android overlays (System Alert Windows).
