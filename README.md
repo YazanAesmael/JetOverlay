@@ -1,6 +1,6 @@
 # JetOverlay SDK
 
-[![](https://jitpack.io/v/YazanAesmael/JetOverlay.svg)](https://jitpack.io/#YazanAesmael/JetOverlay)
+https://github.com/user-attachments/assets/bcf1b559-9706-4b48-93b5-09f87314df83
 
 A lightweight, **Jetpack Compose-first** SDK for managing floating Android overlays (System Alert Windows).
 
