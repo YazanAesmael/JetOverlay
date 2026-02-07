@@ -14,8 +14,10 @@ android {
         applicationId = "com.yazan.jetoverlay"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+
+        // Read versioning from root project (version.properties)
+        versionCode = rootProject.extra["versionCode"] as Int
+        versionName = rootProject.extra["versionName"] as String
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,22 +31,24 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_18
         targetCompatibility = JavaVersion.VERSION_18
     }
+
     kotlin {
         compilerOptions {
             jvmTarget = JvmTarget.JVM_18
         }
     }
+
     buildFeatures {
         compose = true
     }
 }
 
 dependencies {
-    // Import the SDK Module
     implementation(project(":jetoverlay"))
 
     implementation(libs.androidx.core.ktx)

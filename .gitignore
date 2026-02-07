@@ -1,20 +1,17 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.kotlin
-/.gradle
-.DS_Store
+# --- Build System & Dependencies ---
+.gradle/
 /build
-/captures
-/app/release
 /app/build
+/app/release
 .externalNativeBuild
 .cxx
+/.kotlin
+
+# --- Local Configuration & Secrets ---
 local.properties
-jetoverlay.jks
+*.iml
+*.jks
+.DS_Store
+
+# --- IntelliJ / Android Studio (.idea) ---
+/.idea

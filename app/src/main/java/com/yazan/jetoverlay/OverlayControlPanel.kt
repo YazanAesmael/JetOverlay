@@ -25,7 +25,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -50,7 +50,10 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,22 +63,37 @@ import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.yazan.jetoverlay.api.OverlayConfig
 import com.yazan.jetoverlay.api.OverlaySdk
+import kotlin.math.cos
+import kotlin.math.sin
 
-// --- The Control Panel UI ---
-
+/**
+ * The main dashboard for the sample application.
+ *
+ * This composable demonstrates the three key responsibilities of a host app:
+ * 1. Managing Runtime Permissions (System Alert Window & Notifications).
+ * 2. Observing the SDK state ([OverlaySdk.activeOverlays]).
+ * 3. Triggering [OverlaySdk.show] and [OverlaySdk.hide] with specific coordinates.
+ */
 @Composable
 fun OverlayControlPanel(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-
-    // Observe Active Overlays from SDK
     val activeOverlays by OverlaySdk.activeOverlays.collectAsStateWithLifecycle()
 
-    // 1. Check Overlay Permission
+    val windowInfo = LocalWindowInfo.current
+    val density = LocalDensity.current
+
+    val screenWidthPx = windowInfo.containerSize.width
+    val screenHeightPx = windowInfo.containerSize.height
+
+    val centerX = screenWidthPx / 2
+    val centerY = screenHeightPx / 2
+    val radius = with(density) { 130.dp.roundToPx() }
+    val overlayHalfSize = with(density) { 50.dp.roundToPx() }
+
     var hasOverlayPermission by remember {
         mutableStateOf(Settings.canDrawOverlays(context))
     }
 
-    // 2. Check Notification Permission (Android 13+)
     var hasNotificationPermission by remember {
         mutableStateOf(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -84,12 +102,11 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
                     Manifest.permission.POST_NOTIFICATIONS
                 ) == PackageManager.PERMISSION_GRANTED
             } else {
-                true // Implicitly granted below API 33
+                true
             }
         )
     }
 
-    // Launcher for Notification Permission
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
@@ -97,7 +114,7 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
         }
     )
 
-    // --- AUTO-REFRESH LOGIC (LifecycleResumeEffect) ---
+    // Automatically refresh permission state when returning from Settings
     LifecycleResumeEffect(Unit) {
         val newOverlayPermission = Settings.canDrawOverlays(context)
         if (newOverlayPermission != hasOverlayPermission) {
@@ -134,7 +151,6 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(24.dp))
 
         when {
-            // Priority 1: Overlay Permission
             !hasOverlayPermission -> {
                 PermissionWarningCard(
                     title = "Overlay Permission Required",
@@ -149,7 +165,6 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
                 }
             }
 
-            // Priority 2: Notification Permission (Android 13+)
             !hasNotificationPermission -> {
                 PermissionWarningCard(
                     title = "Notifications Required",
@@ -162,15 +177,16 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
                 }
             }
 
-            // Priority 3: Show Grid
             else -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    items(options) { option ->
+                    // Use itemsIndexed to calculate the angle for each specific item
+                    itemsIndexed(options) { index, option ->
                         val isActive = activeOverlays.containsKey(option.id)
+
                         OverlayOptionCard(
                             option = option,
                             isActive = isActive,
@@ -178,12 +194,17 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
                                 if (isActive) {
                                     OverlaySdk.hide(option.id)
                                 } else {
+                                    // Calculate circular position
+                                    val angle = Math.toRadians((360.0 / options.size) * index)
+                                    val startX = (centerX + radius * cos(angle)).toInt() - overlayHalfSize
+                                    val startY = (centerY + radius * sin(angle)).toInt() - overlayHalfSize
+
                                     OverlaySdk.show(
                                         context = context,
                                         config = OverlayConfig(
                                             id = option.id,
-                                            initialX = 100,
-                                            initialY = 300
+                                            initialX = startX,
+                                            initialY = startY
                                         ),
                                         payload = option.color.value.toLong()
                                     )
@@ -197,6 +218,10 @@ fun OverlayControlPanel(modifier: Modifier = Modifier) {
     }
 }
 
+/**
+ * A UI component representing a single overlay configuration option.
+ * Displays visual feedback based on whether the overlay is currently active.
+ */
 @Composable
 fun OverlayOptionCard(
     option: OverlayOption,
@@ -279,11 +304,14 @@ fun OverlayOptionCard(
     }
 }
 
+/**
+ * A generic warning card used to prompt the user for missing permissions.
+ */
 @Composable
 fun PermissionWarningCard(
     title: String,
     text: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector = Icons.Rounded.Add,
+    icon: ImageVector = Icons.Rounded.Add,
     onRequest: () -> Unit
 ) {
     Card(
@@ -317,8 +345,16 @@ fun PermissionWarningCard(
     }
 }
 
-// --- The Content Rendered inside the Overlay ---
-
+/**
+ * The actual content rendered inside the floating window.
+ *
+ * This function is passed to the SDK factory and demonstrates how to handle
+ * the [modifier] provided by the SDK to enable dragging behavior.
+ *
+ * @param modifier The modifier passed by [OverlaySdk]. This MUST be applied to the root element to enable dragging.
+ * @param id The unique ID of the overlay.
+ * @param color The specific color payload for this overlay instance.
+ */
 @Composable
 fun OverlayShapeContent(
     modifier: Modifier,
@@ -330,18 +366,18 @@ fun OverlayShapeContent(
 
     val scale by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 200)
+        animationSpec = tween(durationMillis = 200),
+        label = "OverlayEnterAnimation"
     )
 
     Box(
-        modifier = modifier // <--- SDK Modifier applied here
+        modifier = modifier
             .scale(scale)
             .size(100.dp)
             .shadow(8.dp, CircleShape)
             .clip(CircleShape)
             .background(color)
             .clickable {
-                // Close on tap logic
                 OverlaySdk.hide(id)
             },
         contentAlignment = Alignment.Center
