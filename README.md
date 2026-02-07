@@ -177,7 +177,7 @@ OverlaySdk.show(
 
 ```
 
-## 🤝 Contributing
+## 🧑🏻‍💻 Contributing
 
 Contributions are welcome!
 
@@ -186,6 +186,15 @@ Contributions are welcome!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+
+## 🤝 Support & Community
+
+Join the conversation! We want to hear from you.
+
+* **💬 [Discussions](https://github.com/YazanAesmael/JetOverlay/discussions):** Ask questions, share ideas, or show off what you've built.
+* **🐛 [Issues](https://github.com/YazanAesmael/JetOverlay/issues):** Report bugs or request specific features.
+* **⭐ Star this repo:** It helps the project grow!
+
 
 ---
 
