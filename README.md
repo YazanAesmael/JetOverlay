@@ -1,6 +1,6 @@
 # JetOverlay 🚀
 
-![JitPack](https://jitpack.io/v/YazanAesmael/JetOverlay.svg)
+[![](https://jitpack.io/v/YazanAesmael/JetOverlay.svg)](https://jitpack.io/#YazanAesmael/JetOverlay)
 ![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 ![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg)
 
