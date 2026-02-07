@@ -19,6 +19,14 @@ https://github.com/user-attachments/assets/038e0efe-9b18-47e1-9052-c830d65a6f26
 * **Customizable:** Full control over notification channels, icons, and text.
 * **Safe:** Handles `ConcurrentModificationException` and "Zombie View" scenarios automatically.
 
+## 🤝 Support & Community
+
+Join the conversation! We want to hear from you.
+
+* **💬 [Discussions](https://github.com/YazanAesmael/JetOverlay/discussions):** Ask questions, share ideas, or show off what you've built.
+* **🐛 [Issues](https://github.com/YazanAesmael/JetOverlay/issues):** Report bugs or request specific features.
+* **⭐ Star this repo:** It helps the project grow!
+
 ## Installation
 
 ### Step 1. Add the JitPack repository
