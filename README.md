@@ -6,10 +6,6 @@ A lightweight, **Jetpack Compose-first** SDK for managing floating Android overl
 
 JetOverlay handles the complexity of `WindowManager`, `Service` lifecycle, and `Touch Events`, allowing you to render **native Composable content** floating over other apps with just a few lines of code.
 
-## Demo
-
-https://github.com/user-attachments/assets/038e0efe-9b18-47e1-9052-c830d65a6f26
-
 ## Features
 
 * **Compose First:** Render standard Composable functions as overlays.
