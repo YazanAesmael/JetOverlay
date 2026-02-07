@@ -1,10 +1,13 @@
 # JetOverlay SDK
 
-https://github.com/user-attachments/assets/bcf1b559-9706-4b48-93b5-09f87314df83
+[![](https://jitpack.io/v/YazanAesmael/JetOverlay.svg)](https://jitpack.io/#YazanAesmael/JetOverlay)
 
 A lightweight, **Jetpack Compose-first** SDK for managing floating Android overlays (System Alert Windows).
 
 JetOverlay handles the complexity of `WindowManager`, `Service` lifecycle, and `Touch Events`, allowing you to render **native Composable content** floating over other apps with just a few lines of code.
+
+## Demo
+https://github.com/user-attachments/assets/bcf1b559-9706-4b48-93b5-09f87314df83
 
 ## Features
 
