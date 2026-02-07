@@ -47,7 +47,7 @@ Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
-    implementation("com.github.YazanAesmael:JetOverlay:1.0.1")
+    implementation("com.github.YazanAesmael:JetOverlay:1.1.0")
 }
 
 ```
