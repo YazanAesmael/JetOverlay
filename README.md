@@ -6,8 +6,6 @@
 
 **JetOverlay** is a modern, lightweight Android library built entirely with **Jetpack Compose**. It allows you to easily display floating overlay windows (like Chat Heads or Bubbles) over other apps, managing the complex `WindowManager` lifecycle and permissions for you.
 
----
-
 ## ✨ Features
 
 * **100% Jetpack Compose:** Write your overlay UI using standard Composable functions.
@@ -18,13 +16,9 @@
 * **Permission Handling:** Helper functions to check and request `SYSTEM_ALERT_WINDOW` permission.
 * **Android 14 Ready:** Compliant with the latest Foreground Service policies.
 
----
-
 ## 📱 Demo
 
 https://github.com/user-attachments/assets/7f92d1fd-1fbb-4608-8c7e-0123086a473e
-
----
 
 ## 📦 Installation
 
