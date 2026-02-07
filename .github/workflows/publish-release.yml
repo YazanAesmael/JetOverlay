@@ -2,15 +2,14 @@
 
 name: Publish Release
 
-# Trigger the workflow only when a tag is pushed
 on:
   push:
     tags:
       - 'v*'  # Triggers on tags like v1.0.1
-      - '*'   # Triggers on tags like 1.0.1 (catches your current style)
-
+      - '*'   # Triggers on tags like 1.0.1 
+      
 permissions:
-  contents: write # Required to allow the Action to create a Release
+  contents: write
 
 jobs:
   release:
@@ -20,7 +19,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Optional: Run your Unit Tests before releasing to ensure code is safe
+      # Will run Unit Tests here after creating them.
       # - name: Set up JDK 17
       #   uses: actions/setup-java@v4
       #   with:
@@ -32,5 +31,5 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true # This automatically fills "Describe this release" based on PRs/Commits
+          generate_release_notes: true
           make_latest: true
