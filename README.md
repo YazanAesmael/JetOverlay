@@ -50,7 +50,7 @@ In your module's `build.gradle.kts` (usually `app/build.gradle.kts`):
 
 ```kotlin
 dependencies {
-    implementation("com.github.YazanAesmael:JetOverlay:1.0.0")
+    implementation("com.github.YazanAesmael:JetOverlay:1.0.1")
 }
 
 ```
