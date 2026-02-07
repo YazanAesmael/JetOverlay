@@ -184,8 +184,6 @@ The SDK includes its own `consumer-rules.pro`. You do **not** need to add any ma
 
 ### **LICENSE** (MIT)
 
-Create a file named `LICENSE` in the root of your project and paste this in:
-
 ```text
 MIT License
 
