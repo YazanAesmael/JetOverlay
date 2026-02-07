@@ -20,8 +20,6 @@
 
 ---
 
----
-
 ## 📱 Demo
 
 https://github.com/user-attachments/assets/7f92d1fd-1fbb-4608-8c7e-0123086a473e
@@ -176,6 +174,8 @@ OverlaySdk.show(
 )
 
 ```
+
+---
 
 ## 🧑🏻‍💻 Contributing
 
