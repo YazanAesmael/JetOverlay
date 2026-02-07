@@ -12,6 +12,7 @@ local.properties
 *.iml
 *.jks
 .DS_Store
+ROADMAP.md
 
 # --- IntelliJ / Android Studio (.idea) ---
 /.idea
