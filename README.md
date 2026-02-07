@@ -1,52 +1,49 @@
-# JetOverlay SDK
+# JetOverlay 🚀
 
-[![](https://jitpack.io/v/YazanAesmael/JetOverlay.svg)](https://jitpack.io/#YazanAesmael/JetOverlay)
+![JitPack](https://jitpack.io/v/YazanAesmael/JetOverlay.svg)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+![API](https://img.shields.io/badge/API-26%2B-brightgreen.svg)
 
-A lightweight, **Jetpack Compose-first** SDK for managing floating Android overlays (System Alert Windows).
+**JetOverlay** is a modern, lightweight Android library built entirely with **Jetpack Compose**. It allows you to easily display floating overlay windows (like Chat Heads or Bubbles) over other apps, managing the complex `WindowManager` lifecycle and permissions for you.
 
-JetOverlay handles the complexity of `WindowManager`, `Service` lifecycle, and `Touch Events`, allowing you to render **native Composable content** floating over other apps with just a few lines of code.
+---
 
-## Demo
+## ✨ Features
+
+* **100% Jetpack Compose:** Write your overlay UI using standard Composable functions.
+* **Physics-Based Dragging:** Smooth, natural movement logic built-in.
+* **Lifecycle Aware:** Automatically handles `ViewModelStore` and `LifecycleOwner` for your overlays, preventing memory leaks.
+* **Drag-to-Dismiss:** Built-in "Trash Can" target to easily close overlays by dragging them to the bottom.
+* **Customizable:** Control notification channels, dismiss targets, and overlay configuration with a simple API.
+* **Permission Handling:** Helper functions to check and request `SYSTEM_ALERT_WINDOW` permission.
+* **Android 14 Ready:** Compliant with the latest Foreground Service policies.
+
+---
+
+---
+
+## 📱 Demo
 
 https://github.com/user-attachments/assets/7f92d1fd-1fbb-4608-8c7e-0123086a473e
 
-## Features
+---
 
-* **Compose First:** Render standard Composable functions as overlays.
-* **Built-in Dragging:** Physics-based dragging support out of the box.
-* **Architecture Aware:** Each overlay has its own `Lifecycle`, `ViewModelStore`, and `SavedStateRegistry`.
-* **Resilient:** Survives process death and restarts automatically via Foreground Service.
-* **Customizable:** Full control over notification channels, icons, and text.
-* **Safe:** Handles `ConcurrentModificationException` and "Zombie View" scenarios automatically.
+## 📦 Installation
 
-## 🤝 Support & Community
-
-Join the conversation! We want to hear from you.
-
-* **💬 [Discussions](https://github.com/YazanAesmael/JetOverlay/discussions):** Ask questions, share ideas, or show off what you've built.
-* **🐛 [Issues](https://github.com/YazanAesmael/JetOverlay/issues):** Report bugs or request specific features.
-* **⭐ Star this repo:** It helps the project grow!
-
-## Installation
-
-### Step 1. Add the JitPack repository
-
-In your `settings.gradle.kts` file:
+Add the repository to your root `settings.gradle.kts`:
 
 ```kotlin
 dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven(url = "[https://jitpack.io](https://jitpack.io)")
+        maven { url = uri("[https://jitpack.io](https://jitpack.io)") }
     }
 }
 
 ```
 
-### Step 2. Add the dependency
-
-In your module's `build.gradle.kts` (usually `app/build.gradle.kts`):
+Add the dependency to your app's `build.gradle.kts`:
 
 ```kotlin
 dependencies {
@@ -55,156 +52,161 @@ dependencies {
 
 ```
 
-### Option B: Local Integration
+---
 
-If you are integrating this locally (cloned repo), add the `:jetoverlay` module to your `settings.gradle.kts`:
-
-```kotlin
-include(":jetoverlay")
-
-```
-
-Then add the dependency:
-
-```kotlin
-dependencies {
-    implementation(project(":jetoverlay"))
-}
-
-```
-
-## Quick Start
+## 🚀 Quick Start
 
 ### 1. Initialize the SDK
 
-In your `Application` class or `MainActivity.onCreate`, initialize the SDK factory. This tells the SDK **what** to render when an overlay is requested.
+Initialize the SDK in your `Application` class. This is where you define your global configuration and the factory that renders your content.
 
 ```kotlin
-class MyApplication : Application() {
+class MyApp : Application() {
     override fun onCreate() {
         super.onCreate()
         
         OverlaySdk.initialize(
             notificationConfig = OverlayNotificationConfig(
                 title = "My App Overlay",
-                message = "Tap to configure",
-                iconResId = R.drawable.ic_my_icon
-            )
-        ) { modifier, id, payload ->
-            // This is your Composable content!
-            // 'modifier' handles the dragging logic provided by the SDK.
-            
-            Box(
-                modifier = modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(Color.Red)
-            ) {
-                Text("Overlay: $id")
+                message = "Tap to manage active overlays"
+            ),
+            // Define how to render content based on an ID
+            factory = { id, payload ->
+                MyOverlayContent(id, payload)
             }
+        )
+    }
+}
+
+// Your Composable Content
+@Composable
+fun MyOverlayContent(id: String, payload: Any?) {
+    Card(
+        shape = CircleShape,
+        modifier = Modifier.size(60.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+            Text("☘️")
         }
     }
 }
 
 ```
 
-### 2. Request Permission
+### 2. Check Permissions & Show Overlay
 
-Overlays require the `SYSTEM_ALERT_WINDOW` permission. The SDK does not handle the UI for requesting this, you must do it in your app:
+In your Activity or ViewModel, check for permission and trigger the overlay.
 
 ```kotlin
-if (!Settings.canDrawOverlays(context)) {
-    val intent = Intent(
-        Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-        Uri.parse("package:$packageName")
-    )
-    startActivity(intent)
+val context = LocalContext.current
+
+Button(onClick = {
+    if (OverlaySdk.checkPermission(context)) {
+        // Permission granted, show the overlay
+        OverlaySdk.show(
+            id = "chat_head_1",
+            config = OverlayConfig(initialX = 100, initialY = 200)
+        )
+    } else {
+        // Request permission
+        OverlaySdk.requestPermission(context)
+    }
+}) {
+    Text("Show Overlay")
 }
 
 ```
 
-### 3. Show an Overlay
+---
 
-Once permission is granted, you can show an overlay from anywhere (Activity, ViewModel, BroadcastReceiver).
+## 🎨 Detailed Customization
+
+### 1. Drag-to-Dismiss (Trash Can)
+
+By default, dragging an overlay to the bottom of the screen shows a "Trash Can" icon. You can fully customize this behavior in the `initialize` method.
 
 ```kotlin
-OverlaySdk.show(
-    context = context,
-    config = OverlayConfig(
-        id = "score_card_1",
-        initialX = 100,
-        initialY = 200
-    ),
-    payload = "Match ID: 12345" // Optional data passed to your factory
+OverlaySdk.initialize(
+    // ... other configs
+    dismissConfig = OverlayDismissConfig(
+        enabled = true,                     // Set false to disable completely
+        icon = Icons.Filled.Delete,         // Use your own icon
+        iconColor = Color.White,            // Icon tint
+        backgroundColor = Color(0x80000000),// Normal background (semi-transparent black)
+        activeBackgroundColor = Color.Red,  // Background when hovering (ready to delete)
+        size = 80.dp                        // Size of the target circle
+    )
 )
 
 ```
 
-### 4. Hide an Overlay
+### 2. Notifications
+
+Android requires a persistent notification for foreground services. You can customize the text and channel details.
 
 ```kotlin
-OverlaySdk.hide("score_card_1")
+OverlaySdk.initialize(
+    notificationConfig = OverlayNotificationConfig(
+        channelId = "my_overlay_channel",
+        channelName = "Active Floating Widgets",
+        title = "Widget Active",
+        message = "Drag to move, drag to bottom to close",
+        iconResId = R.drawable.ic_my_logo // Optional custom small icon
+    ),
+    // ...
+)
 
 ```
 
-## Advanced Usage
+### 3. Per-Overlay Configuration
 
-### Using ViewModels
-
-Since each overlay has its own `ViewModelStore`, you can use Hilt or standard ViewModels inside your overlay content securely.
+When calling `OverlaySdk.show()`, you can pass specific configurations for that window instance.
 
 ```kotlin
-OverlaySdk.initialize { modifier, id, payload ->
-    // This ViewModel is scoped to THIS specific overlay window
-    val viewModel: MyOverlayViewModel = viewModel() 
-    
-    MyOverlayScreen(
-        viewModel = viewModel,
-        modifier = modifier
+OverlaySdk.show(
+    id = "video_player",
+    payload = VideoData(url = "..."), // Pass data to your Composable
+    config = OverlayConfig(
+        initialX = 50,
+        initialY = 50,
+        width = 200.dp,   // Optional: Fix the window size
+        height = 120.dp
     )
-}
+)
 
 ```
 
-### ProGuard / R8
+## 🤝 Contributing
 
-The SDK includes its own `consumer-rules.pro`. You do **not** need to add any manual ProGuard rules to your app. The SDK automatically keeps:
+Contributions are welcome!
 
-* The Public API (`com.yazan.jetoverlay.api.**`)
-* The Service reflection entry points.
-
-## Requirements
-
-* minSdk: 26 (Android 8.0)
-* compileSdk: 36
-* Kotlin: 2.0+
-* Jetpack Compose
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
-### **LICENSE** (MIT)
+## 📄 License
 
-```text
-MIT License
-
-Copyright (c) 2026 Yazan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 ```
+Copyright 2024 Yazan Aesmael
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+---

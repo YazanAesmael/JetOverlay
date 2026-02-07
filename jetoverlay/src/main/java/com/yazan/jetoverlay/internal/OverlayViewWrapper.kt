@@ -29,7 +29,7 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
  *
  * @param context The application context.
  */
-internal class OverlayViewWrapper(context: Context) :
+internal open class OverlayViewWrapper(context: Context) :
     FrameLayout(context),
     LifecycleOwner,
     ViewModelStoreOwner,

@@ -27,6 +27,8 @@ object OverlaySdk {
 
     internal var notificationConfig: OverlayNotificationConfig = OverlayNotificationConfig()
 
+    internal var dismissConfig: OverlayDismissConfig = OverlayDismissConfig()
+
     private val _activeOverlays = MutableStateFlow<Map<String, ActiveOverlay>>(emptyMap())
 
     /**
@@ -56,6 +58,7 @@ object OverlaySdk {
      * It configures the global notification settings and the content factory used to render overlays.
      *
      * @param notificationConfig Configuration for the required foreground service notification.
+     * @param dismissConfig Configuration for the dismiss overlay icon.
      * @param factory A functional interface that defines how to render your overlays. It receives a
      * `Modifier` (for dragging), the `id`, and optional `payload`.
      *
@@ -63,9 +66,11 @@ object OverlaySdk {
      */
     fun initialize(
         notificationConfig: OverlayNotificationConfig = OverlayNotificationConfig(),
+        dismissConfig: OverlayDismissConfig = OverlayDismissConfig(),
         factory: OverlayContentFactory
     ) {
         this.notificationConfig = notificationConfig
+        this.dismissConfig = dismissConfig
         this.contentFactory = factory
     }
 
