@@ -18,7 +18,7 @@
 
 ## 📱 Demo
 
-https://github.com/user-attachments/assets/7f92d1fd-1fbb-4608-8c7e-0123086a473e
+https://github.com/user-attachments/assets/eabe97df-b5d7-4f05-a6e0-a163d6186d72
 
 ## 📦 Installation
 
