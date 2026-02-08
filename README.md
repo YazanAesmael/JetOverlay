@@ -187,7 +187,7 @@ Join the conversation! We want to hear from you.
 
 * **💬 [Discussions](https://github.com/YazanAesmael/JetOverlay/discussions):** Ask questions, share ideas, or show off what you've built.
 * **🐛 [Issues](https://github.com/YazanAesmael/JetOverlay/issues):** Report bugs or request specific features.
-* **🗞️ [Article](https://medium.com/@yazanaesmael/stop-fighting-windowmanager-build-android-floating-windows-with-jetpack-compose-c9ebfaf4afc2):** Build Android Floating Windows with Jetpack Compose.
+* **📰 [Medium](https://medium.com/@yazanaesmael/stop-fighting-windowmanager-build-android-floating-windows-with-jetpack-compose-c9ebfaf4afc2):** Build Android Floating Windows with Jetpack Compose.
 * **⭐ Star this repo:** It helps the project grow!
 
 
