@@ -198,7 +198,7 @@ Join the conversation! We want to hear from you.
 Distributed under the Apache 2.0 License. See `LICENSE` for more information.
 
 ```
-Copyright 2024 Yazan Aesmael
+Copyright 2026 Yazan Aesmael
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
