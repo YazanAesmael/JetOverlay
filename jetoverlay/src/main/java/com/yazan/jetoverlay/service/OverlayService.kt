@@ -156,6 +156,7 @@ class OverlayService : Service() {
                     }
                 ) { change, dragAmount ->
                     change.consume()
+                    if (!OverlaySdk.dismissConfig.enabled) return@detectDragGestures
                     params.x += dragAmount.x.toInt()
                     params.y += dragAmount.y.toInt()
 
