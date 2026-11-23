@@ -8,7 +8,8 @@ import androidx.compose.ui.unit.dp
 /**
  * Configuration for the "Drag-to-Dismiss" functionality.
  *
- * @property enabled Whether dragging the overlay to the bottom of the screen should show a dismissal target.
+ * @property deleteEnabled Whether dragging the overlay to the bottom of the screen should show a dismissal target.
+ * @property dragEnabled Whether dragging the overlay is possible.
  * @property icon Optional custom icon for the trash can. If null, a default trash icon is used.
  * @property iconColor The color of the trash icon.
  * @property backgroundColor The background circle color of the dismissal target.
@@ -16,7 +17,8 @@ import androidx.compose.ui.unit.dp
  * @property size The size of the dismissal target circle.
  */
 data class OverlayDismissConfig(
-    val enabled: Boolean = true,
+    val deleteEnabled: Boolean = true,
+    val dragEnabled: Boolean = true,
     val icon: ImageVector? = null,
     val iconColor: Color = Color.White,
     val backgroundColor: Color = Color(0x80000000), // Semi-transparent black
