@@ -60,7 +60,7 @@ class OverlayService : Service() {
     }
 
     private fun setupDismissView() {
-        if (!OverlaySdk.dismissConfig.enabled) return
+        if (!OverlaySdk.dismissConfig.deleteEnabled) return
 
         dismissView = DismissTargetView(this).apply {
             visibility = View.GONE
@@ -156,6 +156,7 @@ class OverlayService : Service() {
                     }
                 ) { change, dragAmount ->
                     change.consume()
+                    if (!OverlaySdk.dismissConfig.dragEnabled) return@detectDragGestures
                     params.x += dragAmount.x.toInt()
                     params.y += dragAmount.y.toInt()
 
